@@ -1,0 +1,35 @@
+{
+  "name": "@auth4flow/auth4flow-nextjs",
+  "version": "0.1.0",
+  "description": "Auth4Flow API Wrapper for NextJS",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "build-local": "npm run build && npm pack",
+    "prepare": "npm run build",
+    "test": "npm run build && mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/auth4Flow/auth4Flow-nextjs.git"
+  },
+  "author": "Auth4Flow",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/auth4Flow/auth4Flow-nextjs/issues"
+  },
+  "homepage": "https://github.com/auth4Flow/auth4Flow-nextjs#readme",
+  "dependencies": {
+    "@auth4flow/auth4flow-node": "file:../Auth4Flow-Node",
+    "cookies": "^0.8.0",
+    "next": "^13.4.9",
+    "next-api-route-middleware": "^1.0.2"
+  },
+  "devDependencies": {
+    "@types/cookies": "^0.7.7",
+    "@types/node": "^20.4.1",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.7"
+  }
+}
