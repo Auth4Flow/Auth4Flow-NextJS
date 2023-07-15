@@ -1,2 +1,3 @@
 export { default as withSessionPermission } from "./middleware/withSessionPermission";
-export { Auth4FlowClient as Auth4FlowServer } from "@auth4flow/auth4flow-node";
+export { Forge4FlowClient as Forge4FlowServer } from "@forge4flow/forge4flow-node";
+export type * from "@forge4flow/forge4flow-node/src/types";

@@ -1,10 +1,6 @@
-import { Auth4FlowClient } from "@auth4flow/auth4flow-node";
-import { NextApiRequest } from "next";
+import { Forge4FlowClient } from "@forge4flow/forge4flow-node";
 import { Middleware } from "next-api-route-middleware";
 import Cookies from "cookies";
-
-export type User = { userId: string };
-export type NextApiRequestWithUser = NextApiRequest & User;
 
 /*
  * withSessionPermission returns a Nextjs middleware function
@@ -12,19 +8,19 @@ export type NextApiRequestWithUser = NextApiRequest & User;
  * required permission before executing the route handler.
  */
 const withSessionPermission = (permissionId: string): Middleware => {
-  const auth4Flow = new Auth4FlowClient({
+  const forge4Flow = new Forge4FlowClient({
     endpoint: process.env.AUTH4FLOW_BASE_URL,
     apiKey: process.env.AUTH4FLOW_API_KEY,
   });
 
   return async function (req, res, next) {
-    const sessionId = new Cookies(req, res).get("__auth4FlowSessionToken");
+    const sessionId = new Cookies(req, res).get("__forge4FlowSessionToken");
     console.log(sessionId);
     if (sessionId) {
-      const userId = await auth4Flow.Session.verifySession(sessionId);
+      const userId = await forge4Flow.Session.verifySession(sessionId);
 
       if (
-        !(await auth4Flow.Authorization.hasPermission({
+        !(await forge4Flow.Authorization.hasPermission({
           permissionId: permissionId,
           subject: {
             objectType: "user",
