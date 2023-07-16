@@ -1,13 +1,16 @@
 import { Forge4FlowClient } from "@forge4flow/forge4flow-node";
-import { Middleware } from "next-api-route-middleware";
+import { Middleware, use } from "next-api-route-middleware";
 import Cookies from "cookies";
+import { NextApiRequest } from "next";
 
 /*
- * withSessionPermission returns a Nextjs middleware function
+ * withSessionPermission returns a Nextjs middleware handler
  * which will check that the logged in user has the
  * required permission before executing the route handler.
  */
-const withSessionPermission = (permissionId: string): Middleware => {
+export const sessionPermissionMiddleware = (
+  permissionId: string
+): Middleware => {
   const forge4Flow = new Forge4FlowClient({
     endpoint: process.env.AUTH4FLOW_BASE_URL,
     apiKey: process.env.AUTH4FLOW_API_KEY,
@@ -41,4 +44,24 @@ const withSessionPermission = (permissionId: string): Middleware => {
   };
 };
 
-export default withSessionPermission;
+export function withSessionPermission<RequestT extends NextApiRequest>(
+  ...middlewaresOrPermissions: (Middleware<RequestT> | string)[]
+): Middleware<RequestT> {
+  const middlewares: Middleware<RequestT>[] = [];
+  let permissionId: string | undefined;
+
+  for (const item of middlewaresOrPermissions) {
+    if (typeof item === "string") {
+      middlewares.push(sessionPermissionMiddleware(item));
+      permissionId = item;
+    } else {
+      middlewares.push(item);
+    }
+  }
+
+  if (!permissionId) {
+    throw new Error("Permission ID is missing.");
+  }
+
+  return use(...middlewares);
+}
