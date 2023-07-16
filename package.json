@@ -1,6 +1,6 @@
 {
   "name": "@forge4flow/forge4flow-nextjs",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Forge4Flow API Wrapper for NextJS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/forge4flow/forge4flow-nextjs#readme",
   "dependencies": {
-    "@forge4flow/forge4flow-node": "file:../Forge4Flow-Node",
+    "@forge4flow/forge4flow-node": "0.0.1",
+    "@forge4flow/forge4flow-react": "0.0.2",
     "cookies": "^0.8.0",
     "next": "^13.4.9",
     "next-api-route-middleware": "^1.0.2"

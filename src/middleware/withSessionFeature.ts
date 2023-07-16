@@ -4,12 +4,12 @@ import { NextApiRequestWithUser } from "../types";
 import Cookies from "cookies";
 
 /*
- * withSessionPermission returns a Nextjs middleware handler
+ * withSessionFeature returns a Nextjs middleware handler
  * which will check that the logged in user has the
- * required permission before executing the route handler.
+ * required feature before executing the route handler.
  */
-export const sessionPermissionMiddleware = (
-  permissionId: string
+export const sessionFeatureMiddleware = (
+  featureId: string
 ): Middleware<NextApiRequestWithUser> => {
   const forge4Flow = new Forge4FlowClient({
     endpoint: process.env.AUTH4FLOW_BASE_URL,
@@ -25,8 +25,8 @@ export const sessionPermissionMiddleware = (
       }
 
       if (
-        !(await forge4Flow.Authorization.hasPermission({
-          permissionId: permissionId,
+        !(await forge4Flow.Authorization.hasFeature({
+          featureId: featureId,
           subject: {
             objectType: "user",
             objectId: req.userId,
@@ -46,23 +46,23 @@ export const sessionPermissionMiddleware = (
   };
 };
 
-export function withSessionPermission(
-  ...middlewaresOrPermissions: (Middleware<NextApiRequestWithUser> | string)[]
+export function withSessionFeature(
+  ...middlewaresOrFeatures: (Middleware<NextApiRequestWithUser> | string)[]
 ): Middleware<NextApiRequestWithUser> {
   const middlewares: Middleware<NextApiRequestWithUser>[] = [];
-  let permissionId: string | undefined;
+  let featureId: string | undefined;
 
-  for (const item of middlewaresOrPermissions) {
+  for (const item of middlewaresOrFeatures) {
     if (typeof item === "string") {
-      middlewares.push(sessionPermissionMiddleware(item));
-      permissionId = item;
+      middlewares.push(sessionFeatureMiddleware(item));
+      featureId = item;
     } else {
       middlewares.push(item);
     }
   }
 
-  if (!permissionId) {
-    throw new Error("Permission ID is missing.");
+  if (!featureId) {
+    throw new Error("Feature ID is missing.");
   }
 
   return use(...middlewares);
