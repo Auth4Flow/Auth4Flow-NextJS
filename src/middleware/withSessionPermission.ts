@@ -18,7 +18,6 @@ export const sessionPermissionMiddleware = (
 
   return async function (req, res, next) {
     const sessionId = new Cookies(req, res).get("__forge4FlowSessionToken");
-    console.log(sessionId);
     if (sessionId) {
       if (!req.userId) {
         req.userId = await forge4Flow.Session.verifySession(sessionId);
