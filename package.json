@@ -1,6 +1,6 @@
 {
   "name": "@forge4flow/forge4flow-nextjs",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Forge4Flow API Wrapper for NextJS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
